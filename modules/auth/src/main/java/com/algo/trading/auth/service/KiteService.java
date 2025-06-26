@@ -5,38 +5,37 @@ import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.models.User;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class KiteService {
 
     private final AuthProperties props;
 
-    /**
-     * Builds a new KiteConnect client and auto-logs in using the stored request token.
-     */
-    public KiteConnect getAuthenticatedClient() {
-        // 1) Construct using API key
+    /** Builds the Zerodha login URL for the user to authenticate. */
+    public String getLoginUrl() {
         KiteConnect kite = new KiteConnect(props.getApiKey());
+        return kite.getLoginURL();
+    }
 
-        // 2) Exchange the request-token for a session (contains accessToken & userId)
-        User session;
-        try {
-            session = kite.generateSession(props.getRequestToken(), props.getApiSecret());
-        } catch (KiteException | IOException e) {
-            log.warn("Exception occurred while getting authenticated KiteConnect client", e);
-            throw new RuntimeException(e);
-        }
+    /**
+     * Exchanges the short-lived request token for an access token & public token,
+     * then stores them in props for later REST/WebSocket calls.
+     */
+    public void generateSession(String requestToken) throws KiteException, IOException {
+        KiteConnect kite = new KiteConnect(props.getApiKey());
+        User session = kite.generateSession(requestToken, props.getApiSecret());
+        props.setAccessToken(session.accessToken);
+        props.setPublicToken(session.publicToken);
+    }
 
-        // 3) Apply the new tokens to the client
-        kite.setAccessToken(session.accessToken);
-        kite.setUserId(session.userId);
-
+    /** Returns a KiteConnect client pre-configured with your stored access token. */
+    public KiteConnect getAuthenticatedClient() {
+        KiteConnect kite = new KiteConnect(props.getApiKey());
+        kite.setAccessToken(props.getAccessToken());
+        kite.setPublicToken(props.getPublicToken());
         return kite;
     }
 }

@@ -6,6 +6,10 @@ Algorithmic trading application
 ### Complete Directory Structure
 
 ```bash
+./gradlew printTree
+```
+
+```bash
 algo-trading-app/
 ├── data/
 │   └── features.csv
@@ -142,7 +146,25 @@ docker-compose rm -f kafka
 ### 🚀 Run & Build
 
 ```bash
-./gradlew clean build
+# From project root:
+./gradlew clean build --refresh-dependencies
+
+# In separate shells:
+./gradlew :modules:auth:bootRun
+./gradlew :modules:backtest:bootRun
+./gradlew :modules:ml:bootRun
+./gradlew :modules:paper:bootRun
+./gradlew :modules:live:bootRun
+
+# Finally start the GUI:
+./gradlew :modules:gui:run
+```
+
+---
+
+### 🚀 Run Tests
+
+```bash
 ./gradlew test
 ```
 

@@ -21,6 +21,11 @@ app:
     featurePath: data
     modelOutputPath: models/latest.model
 
+server:
+  port: 8083
+  servlet:
+    context-path: /ml-service
+
 ---
 # Paper-trading profile
 spring:
