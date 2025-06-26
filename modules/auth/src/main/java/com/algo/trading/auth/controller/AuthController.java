@@ -45,7 +45,7 @@ public class AuthController {
             kiteService.generateSession(requestToken);
             log.info("Session successfully created");
             return ResponseEntity.ok("OK");
-        } catch (KiteException | IOException e) {
+        } catch (Exception e) {
             log.error("Error exchanging request token for session", e);
             throw new AuthException("Failed to create session", e);
         }

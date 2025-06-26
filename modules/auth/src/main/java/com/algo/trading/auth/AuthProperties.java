@@ -8,8 +8,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "app.auth")
 public class AuthProperties {
+    private String userName;
     private String apiKey;
     private String apiSecret;
+    private String redirectUri;
     private String accessToken;
     private String publicToken;
 }
