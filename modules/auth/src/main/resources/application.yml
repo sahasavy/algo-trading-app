@@ -10,5 +10,7 @@ logging:
 
 app:
   auth:
+    userName: YS8604
     apiKey: bhvduzgqkyhxfo7i
     apiSecret: lluyk94y6u505cfpae2hp7nrj3cf2m69
+    redirectUri: http://localhost:8081/auth-service/auth/session
