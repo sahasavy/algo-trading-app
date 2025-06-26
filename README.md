@@ -1,4 +1,5 @@
 # algo-trading-app
+
 Algorithmic trading application
 
 ---
@@ -22,90 +23,208 @@ algo-trading-app/
 │   │   ├── src/
 │   │   │   ├── main/
 │   │   │   │   ├── java/
-│   │   │   │   │   └── com/algo/trading/auth/
-│   │   │   │   │       ├── service/KiteService.java
-│   │   │   │   │       ├── AuthApplication.java
-│   │   │   │   │       └── AuthProperties.java
-│   │   │   │   └── resources/application.yml
-│   │   │   └── test/java/com/algo/trading/auth/
+│   │   │   │   │   └── com/
+│   │   │   │   │       └── algo/
+│   │   │   │   │           └── trading/
+│   │   │   │   │               └── auth/
+│   │   │   │   │                   ├── controller/
+│   │   │   │   │                   │   └── AuthController.java
+│   │   │   │   │                   ├── exception/
+│   │   │   │   │                   │   ├── AuthErrorResponse.java
+│   │   │   │   │                   │   ├── AuthException.java
+│   │   │   │   │                   │   └── GlobalExceptionHandler.java
+│   │   │   │   │                   ├── service/
+│   │   │   │   │                   │   └── KiteService.java
+│   │   │   │   │                   ├── AuthApplication.java
+│   │   │   │   │                   └── AuthProperties.java
+│   │   │   │   └── resources/
+│   │   │   │       └── application.yml
+│   │   │   └── test/
+│   │   │       └── java/
+│   │   │           └── com/
+│   │   │               └── algo/
+│   │   │                   └── trading/
+│   │   │                       └── auth/
 │   │   └── build.gradle
 │   ├── backtest/
 │   │   ├── src/
 │   │   │   ├── main/
-│   │   │   │   ├── java/com/algo/trading/backtest/
-│   │   │   │   │   ├── config/BacktestJobConfig.java
-│   │   │   │   │   ├── controller/BacktestController.java
-│   │   │   │   │   ├── step/BacktestStep.java
-│   │   │   │   │   └── BacktestApplication.java
-│   │   │   │   └── resources/application.yml
-│   │   │   └── test/java/com/algo/trading/backtest/
+│   │   │   │   ├── java/
+│   │   │   │   │   └── com/
+│   │   │   │   │       └── algo/
+│   │   │   │   │           └── trading/
+│   │   │   │   │               └── backtest/
+│   │   │   │   │                   ├── config/
+│   │   │   │   │                   │   └── BacktestJobConfig.java
+│   │   │   │   │                   ├── controller/
+│   │   │   │   │                   │   └── BacktestController.java
+│   │   │   │   │                   ├── step/
+│   │   │   │   │                   │   └── BacktestStep.java
+│   │   │   │   │                   └── BacktestApplication.java
+│   │   │   │   └── resources/
+│   │   │   │       └── application.yml
+│   │   │   └── test/
+│   │   │       └── java/
+│   │   │           └── com/
+│   │   │               └── algo/
+│   │   │                   └── trading/
+│   │   │                       └── backtest/
 │   │   └── build.gradle
 │   ├── common/
 │   │   ├── src/
 │   │   │   ├── main/
-│   │   │   │   ├── java/com/algo/trading/common/
-│   │   │   │   │   ├── config/
-│   │   │   │   │   │   ├── AppProperties.java
-│   │   │   │   │   │   └── SharedConfig.java
-│   │   │   │   │   ├── model/
-│   │   │   │   │   │   ├── InstrumentType.java
-│   │   │   │   │   │   ├── Order.java
-│   │   │   │   │   │   ├── Side.java
-│   │   │   │   │   │   └── TradeData.java
-│   │   │   │   │   └── repository/TradeDataRepository.java
+│   │   │   │   ├── java/
+│   │   │   │   │   └── com/
+│   │   │   │   │       └── algo/
+│   │   │   │   │           └── trading/
+│   │   │   │   │               └── common/
+│   │   │   │   │                   ├── config/
+│   │   │   │   │                   │   ├── AppProperties.java
+│   │   │   │   │                   │   └── SharedConfig.java
+│   │   │   │   │                   ├── model/
+│   │   │   │   │                   │   ├── InstrumentType.java
+│   │   │   │   │                   │   ├── Order.java
+│   │   │   │   │                   │   ├── Side.java
+│   │   │   │   │                   │   └── TradeData.java
+│   │   │   │   │                   └── repository/
+│   │   │   │   │                       └── TradeDataRepository.java
 │   │   │   │   └── resources/
-│   │   │   │       ├── db/changelog/changes/20250624_create_trade_data_table.yaml
-│   │   │   │       ├── db/changelog/db.changelog-master.yaml
+│   │   │   │       ├── db/
+│   │   │   │       │   └── changelog/
+│   │   │   │       │       ├── changes/
+│   │   │   │       │       │   └── 20250624_create_trade_data_table.yaml
+│   │   │   │       │       └── db.changelog-master.yaml
 │   │   │   │       └── application.yml
-│   │   │   └── test/java/com/algo/trading/common/
+│   │   │   └── test/
+│   │   │       └── java/
+│   │   │           └── com/
+│   │   │               └── algo/
+│   │   │                   └── trading/
+│   │   │                       └── common/
 │   │   └── build.gradle
 │   ├── gui/
 │   │   ├── src/
 │   │   │   ├── main/
-│   │   │   │   ├── java/com/algo/trading/gui/
-│   │   │   │   │   ├── MainApp.java
-│   │   │   │   │   └── MainController.java
-│   │   │   │   └── resources/fxml/MainView.fxml
-│   │   │   └── test/java/com/algo/trading/gui/
+│   │   │   │   ├── java/
+│   │   │   │   │   └── com/
+│   │   │   │   │       └── algo/
+│   │   │   │   │           └── trading/
+│   │   │   │   │               └── gui/
+│   │   │   │   │                   ├── config/
+│   │   │   │   │                   │   └── GuiConfig.java
+│   │   │   │   │                   ├── controller/
+│   │   │   │   │                   │   └── MainController.java
+│   │   │   │   │                   ├── GuiApplication.java
+│   │   │   │   │                   └── MainApp.java
+│   │   │   │   └── resources/
+│   │   │   │       ├── fxml/
+│   │   │   │       │   └── MainView.fxml
+│   │   │   │       └── application.yml
+│   │   │   └── test/
+│   │   │       └── java/
+│   │   │           └── com/
+│   │   │               └── algo/
+│   │   │                   └── trading/
+│   │   │                       └── gui/
 │   │   └── build.gradle
 │   ├── indicators/
 │   │   ├── src/
-│   │   │   ├── main/java/com/algo/trading/indicators/service/IndicatorService.java
-│   │   │   └── test/java/com/algo/trading/indicators/
+│   │   │   ├── main/
+│   │   │   │   ├── java/
+│   │   │   │   │   └── com/
+│   │   │   │   │       └── algo/
+│   │   │   │   │           └── trading/
+│   │   │   │   │               └── indicators/
+│   │   │   │   │                   ├── service/
+│   │   │   │   │                   │   └── IndicatorService.java
+│   │   │   │   │                   └── IndicatorsApplication.java
+│   │   │   │   └── resources/
+│   │   │   │       └── application.yml
+│   │   │   └── test/
+│   │   │       └── java/
+│   │   │           └── com/
+│   │   │               └── algo/
+│   │   │                   └── trading/
+│   │   │                       └── indicators/
 │   │   └── build.gradle
 │   ├── live/
 │   │   ├── src/
-│   │   │   ├── main/java/com/algo/trading/live/
-│   │   │   │   ├── config/LiveProperties.java
-│   │   │   │   ├── controller/LiveController.java
-│   │   │   │   ├── service/LiveTradingService.java
-│   │   │   │   └── LiveApplication.java
-│   │   │   └── resources/application.yml
+│   │   │   ├── main/
+│   │   │   │   ├── java/
+│   │   │   │   │   └── com/
+│   │   │   │   │       └── algo/
+│   │   │   │   │           └── trading/
+│   │   │   │   │               └── live/
+│   │   │   │   │                   ├── config/
+│   │   │   │   │                   │   └── LiveProperties.java
+│   │   │   │   │                   ├── controller/
+│   │   │   │   │                   │   └── LiveController.java
+│   │   │   │   │                   ├── service/
+│   │   │   │   │                   │   └── LiveTradingService.java
+│   │   │   │   │                   └── LiveApplication.java
+│   │   │   │   └── resources/
+│   │   │   │       └── application.yml
+│   │   │   └── test/
+│   │   │       └── java/
+│   │   │           └── com/
+│   │   │               └── algo/
+│   │   │                   └── trading/
+│   │   │                       └── live/
 │   │   └── build.gradle
 │   ├── ml/
 │   │   ├── src/
-│   │   │   ├── main/java/com/algo/trading/ml/
-│   │   │   │   ├── config/BatchConfig.java
-│   │   │   │   ├── config/MlProperties.java
-│   │   │   │   ├── controller/MlController.java
-│   │   │   │   ├── step/FeatureExtractor.java
-│   │   │   │   ├── step/ModelTrainer.java
-│   │   │   │   └── MlApplication.java
-│   │   │   └── resources/application.yml
-│   │   └── test/
-│   │       ├── java/com/algo/trading/ml/controller/MlControllerIntegrationTest.java
-│   │       └── resources/application-test.yml
+│   │   │   ├── main/
+│   │   │   │   ├── java/
+│   │   │   │   │   └── com/
+│   │   │   │   │       └── algo/
+│   │   │   │   │           └── trading/
+│   │   │   │   │               └── ml/
+│   │   │   │   │                   ├── config/
+│   │   │   │   │                   │   ├── BatchConfig.java
+│   │   │   │   │                   │   └── MlProperties.java
+│   │   │   │   │                   ├── controller/
+│   │   │   │   │                   │   └── MlController.java
+│   │   │   │   │                   ├── step/
+│   │   │   │   │                   │   ├── FeatureExtractor.java
+│   │   │   │   │                   │   └── ModelTrainer.java
+│   │   │   │   │                   └── MlApplication.java
+│   │   │   │   └── resources/
+│   │   │   │       └── application.yml
+│   │   │   └── test/
+│   │   │       ├── java/
+│   │   │       │   └── com/
+│   │   │       │       └── algo/
+│   │   │       │           └── trading/
+│   │   │       │               └── ml/
+│   │   │       │                   └── controller/
+│   │   │       │                       └── MlControllerIntegrationTest.java
+│   │   │       └── resources/
+│   │   │           └── application-test.yml
 │   │   └── build.gradle
 │   └── paper/
 │       ├── src/
-│       │   ├── main/java/com/algo/trading/paper/
-│       │   │   ├── config/KiteConfig.java
-│       │   │   ├── config/PaperProperties.java
-│       │   │   ├── controller/PaperController.java
-│       │   │   ├── service/PaperTradingService.java
-│       │   │   └── PaperApplication.java
-│       │   └── resources/application.yml
-│       └── test/java/com/algo/trading/paper/
+│       │   ├── main/
+│       │   │   ├── java/
+│       │   │   │   └── com/
+│       │   │   │       └── algo/
+│       │   │   │           └── trading/
+│       │   │   │               └── paper/
+│       │   │   │                   ├── config/
+│       │   │   │                   │   ├── KiteConfig.java
+│       │   │   │                   │   └── PaperProperties.java
+│       │   │   │                   ├── controller/
+│       │   │   │                   │   └── PaperController.java
+│       │   │   │                   ├── service/
+│       │   │   │                   │   └── PaperTradingService.java
+│       │   │   │                   └── PaperApplication.java
+│       │   │   └── resources/
+│       │   │       └── application.yml
+│       │   └── test/
+│       │       └── java/
+│       │           └── com/
+│       │               └── algo/
+│       │                   └── trading/
+│       │                       └── paper/
 │       └── build.gradle
 ├── HELP.md
 ├── README.md
@@ -119,24 +238,29 @@ algo-trading-app/
 
 ### Docker Compose commands:
 
-The `docker-compose.yml` defines MySQL, Redis, ZooKeeper, and Kafka—all on a shared backend network. Each service has its own named container, volume, and exposed port, so we can start or stop them independently:
+The `docker-compose.yml` defines MySQL, Redis, ZooKeeper, and Kafka—all on a shared backend network. Each service has
+its own named container, volume, and exposed port, so we can start or stop them independently:
 
 1. Start all:
+
 ```bash
 docker-compose up -d
 ```
 
 2. Start just MySQL (for example):
+
 ```bash
 docker-compose up -d mysql
 ```
 
 3. Stop Redis:
+
 ```bash
 docker-compose stop redis
 ```
 
 4. Remove Kafka:
+
 ```bash
 docker-compose rm -f kafka
 ```

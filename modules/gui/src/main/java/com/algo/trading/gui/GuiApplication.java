@@ -2,7 +2,7 @@ package com.algo.trading.gui;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.algo.trading.gui")
 public class GuiApplication {
-    // Just a marker for Spring Boot auto‐config
+    // Bootstraps Spring for the GUI
 }

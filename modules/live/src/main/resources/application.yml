@@ -7,6 +7,11 @@ server:
   servlet:
     context-path: /live-service
 
+logging:
+  level:
+    root: INFO
+    com.algo.trading.live: DEBUG
+
 app:
   live:
     # instrument tokens (longs) to subscribe

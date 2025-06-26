@@ -6,34 +6,41 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+@Slf4j
 public class MainApp extends Application {
 
     private ConfigurableApplicationContext springContext;
 
     @Override
     public void init() {
-        // Launch Spring Boot context
+        log.info("Starting Spring context for GUI");
         springContext = new SpringApplicationBuilder(GuiApplication.class).run();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // Load FXML via Spring’s controllerFactory
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
-        loader.setControllerFactory(springContext::getBean);
-        Parent root = loader.load();
+    public void start(Stage primaryStage) {
+        try {
+            log.info("Loading JavaFX scene from FXML");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
+            loader.setControllerFactory(springContext::getBean);
+            Parent root = loader.load();
 
-        primaryStage.setTitle("Algo Trading GUI");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
+            primaryStage.setTitle("Algo Trading GUI");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        } catch (Exception e) {
+            log.error("Failed to start JavaFX application", e);
+            Platform.exit();
+        }
     }
 
     @Override
     public void stop() {
-        // Close Spring context and JavaFX
+        log.info("Shutting down Spring context and exiting");
         springContext.close();
         Platform.exit();
     }
