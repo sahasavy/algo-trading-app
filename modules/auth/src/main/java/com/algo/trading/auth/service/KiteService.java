@@ -2,58 +2,41 @@ package com.algo.trading.auth.service;
 
 import com.algo.trading.auth.AuthProperties;
 import com.zerodhatech.kiteconnect.KiteConnect;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.User;
+import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class KiteService {
 
     private final AuthProperties props;
-    private KiteConnect kiteConnect;
 
     /**
-     * Initializes the KiteConnect instance with your API key.
-     * Must be called before generateSession().
+     * Builds a new KiteConnect client and auto-logs in using the stored request token.
      */
-    private void initClient() {
-        if (kiteConnect == null) {
-            kiteConnect = new KiteConnect(props.getApiKey());
+    public KiteConnect getAuthenticatedClient() {
+        // 1) Construct using API key
+        KiteConnect kite = new KiteConnect(props.getApiKey());
+
+        // 2) Exchange the request-token for a session (contains accessToken & userId)
+        User session;
+        try {
+            session = kite.generateSession(props.getRequestToken(), props.getApiSecret());
+        } catch (KiteException | IOException e) {
+            log.warn("Exception occurred while getting authenticated KiteConnect client", e);
+            throw new RuntimeException(e);
         }
-    }
 
-    /**
-     * Returns the login URL for your front end to redirect users.
-     */
-    public String getLoginUrl() {
-        initClient();
-        return kiteConnect.getLoginURL();
-    }
+        // 3) Apply the new tokens to the client
+        kite.setAccessToken(session.accessToken);
+        kite.setUserId(session.userId);
 
-    /**
-     * Exchanges the short-lived request token for a full session, and
-     * populates the KiteConnect client with accessToken, publicToken, and userId.
-     *
-     * @param requestToken the one-time token returned from the login redirect
-     */
-    public void generateSession(String requestToken) throws KiteException, IOException {
-        initClient();
-        User session = kiteConnect.generateSession(requestToken, props.getApiSecret());
-        // com.zerodhatech.models.User has public fields, not getters
-        kiteConnect.setAccessToken(session.accessToken);
-        kiteConnect.setPublicToken(session.publicToken);
-        kiteConnect.setUserId(session.userId);
-    }
-
-    /**
-     * @return the fully authenticated KiteConnect client
-     */
-    public KiteConnect getKiteConnect() {
-        initClient();
-        return kiteConnect;
+        return kite;
     }
 }

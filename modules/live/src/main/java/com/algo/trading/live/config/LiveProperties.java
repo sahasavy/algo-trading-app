@@ -1,19 +1,3 @@
-//package com.algo.trading.live.config;
-//
-//import lombok.Data;
-//import org.springframework.boot.context.properties.ConfigurationProperties;
-//
-//import java.util.List;
-//
-//@ConfigurationProperties(prefix = "app.live")
-//@Data
-//public class LiveProperties {
-//    private List<String> instruments;
-//    private int orderQuantity;
-//    private String orderType;
-//    private String product;
-//}
-
 package com.algo.trading.live.config;
 
 import lombok.Data;

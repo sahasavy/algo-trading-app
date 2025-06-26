@@ -9,6 +9,7 @@ import com.zerodhatech.models.Order;
 import com.zerodhatech.models.OrderParams;
 import com.zerodhatech.models.Tick;
 import com.zerodhatech.ticker.KiteTicker;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,19 +39,25 @@ public class LiveTradingService {
             .build();
     private final AtomicBoolean running = new AtomicBoolean(false);
 
+    @PostConstruct
+    public void init() {
+        this.kiteConnect = kiteService.getAuthenticatedClient();
+        log.info("Live trading initialized for user {}", kiteConnect.getUserId());
+    }
+
     public void start() {
         if (!running.compareAndSet(false, true)) {
             log.warn("Live trading already running");
             return;
         }
-        // 1) Get REST client
-        this.kiteConnect = kiteService.getKiteConnect();
-        log.info("Starting live trading for instruments: {}", props.getInstruments());
+        log.info("Starting live trading on {}", props.getInstruments());
 
-        // 2) Copy instrument tokens into a mutable list
+        // TODO: subscribe to WebSocket, build bars, compute signals, place orders...
+
+        // 1) Copy instrument tokens into a mutable list
         ArrayList<Long> tokens = new ArrayList<>(props.getInstruments());
 
-        // 3) Initialize WebSocket ticker
+        // 2) Initialize WebSocket ticker
         KiteTicker ticker = new KiteTicker(
                 kiteConnect.getApiKey(),
                 kiteConnect.getAccessToken()
@@ -63,14 +70,14 @@ public class LiveTradingService {
             throw new RuntimeException(e);
         }
 
-        // 4) Subscribe + set full mode on connect
+        // 3) Subscribe + set full mode on connect
         ticker.setOnConnectedListener(() -> {
             ticker.subscribe(tokens);
             ticker.setMode(tokens, KiteTicker.modeFull);
             log.info("WebSocket connected & subscribed: {}", tokens);
         });
 
-        // 5) Build up 1-minute bars and check SMA(10,30) crossover
+        // 4) Build up 1-minute bars and check SMA(10,30) crossover
         AtomicReference<Instant> barTime = new AtomicReference<>();
         AtomicReference<Double> open = new AtomicReference<>();
         AtomicReference<Double> high = new AtomicReference<>();
@@ -131,21 +138,19 @@ public class LiveTradingService {
             }
         });
 
-        // 6) Connect!
+        // 5) Connect!
         ticker.connect();
     }
 
     public void stop() {
         if (running.compareAndSet(true, false)) {
             log.info("Stopped live trading");
+            // TODO: unsubscribe from WS
         } else {
-            log.warn("Live trading was not running");
+            log.warn("Live trading not running");
         }
     }
 
-    /**
-     * Exposed to the REST controller
-     */
     public boolean isRunning() {
         return running.get();
     }
