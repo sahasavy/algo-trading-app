@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250624-01
+      author: sourav
+      changes:
+        - createTable:
+            tableName: trade_data
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: open
+                  type: DECIMAL(18,8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: high
+                  type: DECIMAL(18,8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: low
+                  type: DECIMAL(18,8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: close
+                  type: DECIMAL(18,8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: volume
+                  type: DECIMAL(18,8)
+                  constraints:
+                    nullable: false

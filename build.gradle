@@ -1,36 +1,90 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.3'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'idea'
 }
 
-group = 'com.algo'
-version = '0.0.1-SNAPSHOT'
+group = 'com.algo.trading'
+version = '0.1.0'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
+    // compile with --release to enforce API level
+    tasks.withType(JavaCompile).configureEach {
+        options.release.set(21)
+    }
+
+    repositories { mavenCentral() }
+
+    dependencies {
+        implementation 'org.projectlombok:lombok:1.18.36'
+        annotationProcessor 'org.projectlombok:lombok:1.18.36'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+        testImplementation 'org.mockito:mockito-core:4.11.0'
+    }
+
+    tasks.withType(Test).tap {
+        configureEach {
+            useJUnitPlatform()
+        }
+    }
 }
 
-repositories {
-	mavenCentral()
-}
+tasks.register('printTree') {
+    doLast {
+        def excludeDirs = ['.git', '.gradle', '.idea', 'build']
+        def excludeFiles = ['.gitignore', 'gradlew', 'gradlew.bat']
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
+        def shouldInclude = { File f ->
+            if (f.isDirectory() && f.name in excludeDirs) return false
+            if (f.isFile() && f.name in excludeFiles) return false
+            true
+        }
 
-tasks.named('test') {
-	useJUnitPlatform()
+        def printDir
+        printDir = { File dir, String prefix, boolean isLast ->
+            def connector = isLast ? '└── ' : '├── '
+            println prefix + connector + dir.name + (dir.isDirectory() ? '/' : '')
+            if (dir.isDirectory()) {
+                def children = dir.listFiles()
+                        .findAll(shouldInclude)
+                        .sort { a, b ->
+                            (a.isFile() ? 1 : 0) <=> (b.isFile() ? 1 : 0) ?: a.name <=> b.name
+                        }
+                children.eachWithIndex { File child, idx ->
+                    def last = (idx == children.size() - 1)
+                    def newPrefix = prefix + (isLast ? '    ' : '│   ')
+                    printDir(child, newPrefix, last)
+                }
+            }
+        }
+
+        def root = project.projectDir
+        println "${root.name}/"
+        root.listFiles()
+                .findAll(shouldInclude)
+                .sort { a, b ->
+                    (a.isFile() ? 1 : 0) <=> (b.isFile() ? 1 : 0) ?: a.name <=> b.name
+                }
+                .eachWithIndex { File child, idx ->
+                    def last = (idx == root.listFiles().findAll(shouldInclude).size() - 1)
+                    printDir(child, '', last)
+                }
+    }
 }

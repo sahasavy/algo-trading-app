@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx/21.0.7"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.algo.trading.gui.MainController">
+
+    <center>
+        <TabPane fx:id="tabPane">
+            <tabs>
+                <Tab fx:id="loginTab" text="Login">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <HBox spacing="5">
+                            <Label text="API Key:"/>
+                            <TextField fx:id="apiKeyField"/>
+                        </HBox>
+                        <HBox spacing="5">
+                            <Label text="Secret:"/>
+                            <TextField fx:id="apiSecretField"/>
+                        </HBox>
+                        <Button text="Login" fx:id="loginButton"/>
+                    </VBox>
+                </Tab>
+                <Tab fx:id="backtestTab" text="Backtest">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <Button text="Run Backtest" fx:id="backtestButton"/>
+                    </VBox>
+                </Tab>
+                <Tab fx:id="tradingTab" text="Trading">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <HBox spacing="5">
+                            <Button text="Toggle Paper" fx:id="paperButton"/>
+                            <Button text="Toggle Live" fx:id="liveButton"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+
+    <bottom>
+        <TextArea fx:id="logArea" prefHeight="150" wrapText="true"/>
+    </bottom>
+</BorderPane>

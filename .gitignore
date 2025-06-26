@@ -22,3 +22,17 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# all build folders
+/modules/auth/build/
+/modules/backtest/build/
+/modules/common/build/
+/modules/gui/build/
+/modules/indicators/build/
+/modules/live/build/
+/modules/ml/build/
+/modules/paper/build/
+/modules/build/
+/build/
+/.gradle/
+/.idea/

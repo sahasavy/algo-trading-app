@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+
+app:
+  backtest:
+    lookbackDays: 365
+    reportPath: reports
