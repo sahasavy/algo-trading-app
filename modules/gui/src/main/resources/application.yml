@@ -1,3 +1,8 @@
+logging:
+  level:
+    root: INFO
+    com.algo.trading.gui: DEBUG
+
 auth:
   baseUrl: http://localhost:8081/auth-service
 backtest:

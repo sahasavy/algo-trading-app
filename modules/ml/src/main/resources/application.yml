@@ -26,6 +26,11 @@ server:
   servlet:
     context-path: /ml-service
 
+logging:
+  level:
+    root: INFO
+    com.algo.trading.ml: DEBUG
+
 ---
 # Paper-trading profile
 spring:

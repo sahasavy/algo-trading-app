@@ -7,6 +7,11 @@ server:
   servlet:
     context-path: /paper-service
 
+logging:
+  level:
+    root: INFO
+    com.algo.trading.paper: DEBUG
+
 app:
   paper:
     instruments:

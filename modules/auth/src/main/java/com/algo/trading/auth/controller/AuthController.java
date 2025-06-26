@@ -1,8 +1,10 @@
 package com.algo.trading.auth.controller;
 
+import com.algo.trading.auth.exception.AuthException;
 import com.algo.trading.auth.service.KiteService;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +13,25 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final KiteService kiteService;
 
-    /** Returns the URL where the user should be redirected to log in. */
+    /**
+     * Endpoint to fetch the Zerodha login URL.
+     */
     @GetMapping("/login")
     public ResponseEntity<String> loginUrl() {
-        return ResponseEntity.ok(kiteService.getLoginUrl());
+        try {
+            log.info("Started user login process");
+            String url = kiteService.getLoginUrl();
+            log.info("Provided login URL to client");
+            return ResponseEntity.ok(url);
+        } catch (Exception e) {
+            log.error("Failed to generate login URL", e);
+            throw new AuthException("Failed to generate login URL", e);
+        }
     }
 
     /**
@@ -26,9 +39,15 @@ public class AuthController {
      * We exchange it for a session here.
      */
     @GetMapping("/session")
-    public ResponseEntity<String> createSession(@RequestParam("request_token") String requestToken)
-            throws KiteException, IOException {
-        kiteService.generateSession(requestToken);
-        return ResponseEntity.ok("OK");
+    public ResponseEntity<String> createSession(@RequestParam("request_token") String requestToken) {
+        try {
+            log.info("Received callback with request_token={}", requestToken);
+            kiteService.generateSession(requestToken);
+            log.info("Session successfully created");
+            return ResponseEntity.ok("OK");
+        } catch (KiteException | IOException e) {
+            log.error("Error exchanging request token for session", e);
+            throw new AuthException("Failed to create session", e);
+        }
     }
 }
