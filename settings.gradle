@@ -1,2 +1,9 @@
 rootProject.name = 'algo-trading-app'
-include 'modules:common', 'modules:auth', 'modules:indicators', 'modules:ml', 'modules:backtest', 'modules:paper', 'modules:live', 'modules:gui'
+include 'modules:common',
+        'modules:auth',
+        'modules:indicators',
+        'modules:ml',
+        'modules:backtest',
+        'modules:paper',
+        'modules:live',
+        'modules:gui'

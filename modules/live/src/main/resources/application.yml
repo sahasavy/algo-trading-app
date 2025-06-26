@@ -2,6 +2,11 @@ spring:
   profiles:
     active: dev
 
+server:
+  port: 8085
+  servlet:
+    context-path: /live-service
+
 app:
   live:
     # instrument tokens (longs) to subscribe

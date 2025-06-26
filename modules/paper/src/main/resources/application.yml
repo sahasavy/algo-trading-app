@@ -2,13 +2,13 @@ spring:
   profiles:
     active: dev
 
+server:
+  port: 8084
+  servlet:
+    context-path: /paper-service
+
 app:
   paper:
-    apiKey: YOUR_API_KEY
-    apiSecret: YOUR_API_SECRET
-    # comma‐separated list of instrument tokens to subscribe for paper trading
-    instruments: []
-
-    # if WS disconnects, retry after this many ms
-    websocket:
-      reconnectIntervalMs: 5000
+    instruments:
+      - 738561
+      - 56323
