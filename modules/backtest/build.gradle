@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -11,28 +10,30 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.0"
+    }
+}
+
 dependencies {
     // Shared modules
     implementation project(':modules:common')
     implementation project(':modules:indicators')
 
-    // Spring Boot web & JPA (for controllers and @EnableJpaRepositories)
+    // Spring MVC + JPA for saving/loading trade data
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // Spring Batch
     implementation 'org.springframework.boot:spring-boot-starter-batch'
 
-    // TA4J core (includes backtesting analysis)
+    // TA4J core + backtester
     implementation 'org.ta4j:ta4j-core:0.18'
 
-    // Lombok for @Slf4j, @RequiredArgsConstructor
-    implementation 'org.projectlombok:lombok:1.18.36'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
-    // MySQL driver at runtime
-    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
-
-    // Tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

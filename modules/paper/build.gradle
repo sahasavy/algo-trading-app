@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -11,29 +10,28 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    // Shared code
-    implementation project(':modules:common')
-    implementation project(':modules:indicators')
-    implementation project(':modules:auth')
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.0"
+    }
+}
 
-    // Spring Boot & Web
-    implementation 'org.springframework.boot:spring-boot-starter'
+dependencies {
+    // Shared modules
+    implementation project(':modules:auth')
+    implementation project(':modules:indicators')
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    // Zerodha Kite Connect SDK (REST + WebSocket)
+    // Zerodha SDK
     implementation 'com.zerodhatech.kiteconnect:kiteconnect:3.5.0'
 
+    // TA4J
     implementation 'org.ta4j:ta4j-core:0.18'
 
     // Lombok
-    implementation 'org.projectlombok:lombok:1.18.36'
+    compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
-    // Tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
-
-tasks.withType(Test) {
-    useJUnitPlatform()
 }

@@ -1,25 +1,25 @@
-# Test profile
-spring:
-#  config:
-#    activate:
-#      on-profile: dev
-  batch:
-    initialize-schema: always
-    job:
-      enabled: false    # don’t run any jobs automatically on startup
-  datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-#  liquibase:
-#    change-log: classpath:db/changelog/db.changelog-master.yaml
-
-#app:
-#  ml:
-#    trainingPeriodDays: 365
-#    testingPeriodDays: 90
-#    featurePath: data
-#    modelOutputPath: models/latest.model
-
----
+## Test profile
+#spring:
+##  config:
+##    activate:
+##      on-profile: dev
+#  batch:
+#    initialize-schema: always
+#    job:
+#      enabled: false    # don’t run any jobs automatically on startup
+#  datasource:
+#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+##  liquibase:
+##    change-log: classpath:db/changelog/db.changelog-master.yaml
+#
+##app:
+##  ml:
+##    trainingPeriodDays: 365
+##    testingPeriodDays: 90
+##    featurePath: data
+##    modelOutputPath: models/latest.model
+#
+#---

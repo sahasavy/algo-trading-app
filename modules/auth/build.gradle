@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -11,12 +10,22 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation project(':modules:common')
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'com.zerodhatech.kiteconnect:kiteconnect:3.5.0'
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.0"
+    }
 }
 
-tasks.withType(Test) {
-    useJUnitPlatform()
+dependencies {
+    // Expose REST endpoints for login/session
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Zerodha SDK
+    implementation 'com.zerodhatech.kiteconnect:kiteconnect:3.5.0'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
