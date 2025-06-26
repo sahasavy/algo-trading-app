@@ -1,0 +1,70 @@
+# Development profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false    # don’t run any jobs automatically on startup
+  datasource:
+    url: jdbc:mysql://localhost:3306/algotrading_ml
+    username: algo_user
+    password: algopass
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+app:
+  ml:
+    trainingPeriodDays: 365
+    testingPeriodDays: 90
+    featurePath: data
+    modelOutputPath: models/latest.model
+
+---
+# Paper-trading profile
+spring:
+  config:
+    activate:
+      on-profile: paper
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false    # don’t run any jobs automatically on startup
+  datasource:
+    url: jdbc:mysql://localhost:3306/algotrading_paper_ml
+    username: algo_user
+    password: algopass
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+app:
+  ml:
+    trainingPeriodDays: 365
+    testingPeriodDays: 90
+    featurePath: data
+    modelOutputPath: models/latest.model
+
+---
+# Live-trading profile
+spring:
+  config:
+    activate:
+      on-profile: live
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false    # don’t run any jobs automatically on startup
+  datasource:
+    url: jdbc:mysql://localhost:3306/algotrading_live_ml
+    username: algo_user
+    password: algopass
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+app:
+  ml:
+    trainingPeriodDays: 365
+    testingPeriodDays: 90
+    featurePath: data
+    modelOutputPath: models/latest.model

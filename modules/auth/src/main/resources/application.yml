@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: dev
+
+#app:
+#  auth:
+#    apiKey: ${YOUR_API_KEY}
+#    apiSecret: ${YOUR_API_SECRET}
+#    redirectUrl: http://localhost:8081/auth/callback
+app:
+  auth:
+    apiKey: YOUR_API_KEY
+    apiSecret: YOUR_API_SECRET

@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.algo.trading'
+version = '0.1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Shared code
+    implementation project(':modules:common')
+    implementation project(':modules:indicators')
+    implementation project(':modules:auth')
+
+    // Spring Boot & Web
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Zerodha Kite Connect SDK (REST + WebSocket)
+    implementation 'com.zerodhatech.kiteconnect:kiteconnect:3.5.0'
+
+    implementation 'org.ta4j:ta4j-core:0.18'
+
+    // Lombok
+    implementation 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    // Tests
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}

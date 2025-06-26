@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.algo.trading'
+version = '0.1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.0"
+    }
+}
+
+dependencies {
+    // Embedded HTTP server for login callback
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
+
+    // REST client (Spring Web)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
+    // Lombok for boilerplate
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+}
+
+javafx {
+    version = "21.0.7"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+//    configuration = 'compileOnly'
+    configurations = [ 'implementation', 'testImplementation' ]
+}
+
+application {
+    mainClass = "com.algo.trading.gui.MainApp"
+    applicationDefaultJvmArgs = [
+            '--add-modules=javafx.controls,javafx.fxml'
+//            '--add-modules', 'javafx.controls,javafx.fxml'
+    ]
+}

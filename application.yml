@@ -1,0 +1,32 @@
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/algotrading
+    username: algo_user
+    password: algopass
+app:
+  name: algo-trading-app
+  description: Development profile
+
+---
+spring:
+  profiles: paper
+  datasource:
+    url: jdbc:mysql://localhost:3306/algotrading_paper
+    username: algo_user
+    password: algopass
+app:
+  name: algo-trading-app
+  description: Paper trading profile
+
+---
+spring:
+  profiles: live
+  datasource:
+    url: jdbc:mysql://localhost:3306/algotrading_live
+    username: algo_user
+    password: algopass
+app:
+  name: algo-trading-app
+  description: Live trading profile

@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: dev
+
+app:
+  live:
+    # instrument tokens (longs) to subscribe
+    instruments:
+      - 738561
+      - 56323
+    # how many contracts/shares per order
+    orderQuantity: 1
+    # MARKET or LIMIT
+    orderType: MARKET
+    # MIS (Intraday) or CNC (Delivery)
+    product: MIS
+    # WebSocket reconnect interval in milliseconds
+    reconnectIntervalMs: 5000

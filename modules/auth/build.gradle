@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.algo.trading'
+version = '0.1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':modules:common')
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.zerodhatech.kiteconnect:kiteconnect:3.5.0'
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
