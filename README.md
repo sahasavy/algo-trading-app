@@ -7,96 +7,108 @@ Algorithmic trading application
 
 ```bash
 algo-trading-app/
-├── settings.gradle
+├── data/
+│   └── features.csv
+├── gradle/
+│   └── wrapper/
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── modules/
+│   ├── auth/
+│   │   ├── src/
+│   │   │   ├── main/
+│   │   │   │   ├── java/
+│   │   │   │   │   └── com/algo/trading/auth/
+│   │   │   │   │       ├── service/KiteService.java
+│   │   │   │   │       ├── AuthApplication.java
+│   │   │   │   │       └── AuthProperties.java
+│   │   │   │   └── resources/application.yml
+│   │   │   └── test/java/com/algo/trading/auth/
+│   │   └── build.gradle
+│   ├── backtest/
+│   │   ├── src/
+│   │   │   ├── main/
+│   │   │   │   ├── java/com/algo/trading/backtest/
+│   │   │   │   │   ├── config/BacktestJobConfig.java
+│   │   │   │   │   ├── controller/BacktestController.java
+│   │   │   │   │   ├── step/BacktestStep.java
+│   │   │   │   │   └── BacktestApplication.java
+│   │   │   │   └── resources/application.yml
+│   │   │   └── test/java/com/algo/trading/backtest/
+│   │   └── build.gradle
+│   ├── common/
+│   │   ├── src/
+│   │   │   ├── main/
+│   │   │   │   ├── java/com/algo/trading/common/
+│   │   │   │   │   ├── config/
+│   │   │   │   │   │   ├── AppProperties.java
+│   │   │   │   │   │   └── SharedConfig.java
+│   │   │   │   │   ├── model/
+│   │   │   │   │   │   ├── InstrumentType.java
+│   │   │   │   │   │   ├── Order.java
+│   │   │   │   │   │   ├── Side.java
+│   │   │   │   │   │   └── TradeData.java
+│   │   │   │   │   └── repository/TradeDataRepository.java
+│   │   │   │   └── resources/
+│   │   │   │       ├── db/changelog/changes/20250624_create_trade_data_table.yaml
+│   │   │   │       ├── db/changelog/db.changelog-master.yaml
+│   │   │   │       └── application.yml
+│   │   │   └── test/java/com/algo/trading/common/
+│   │   └── build.gradle
+│   ├── gui/
+│   │   ├── src/
+│   │   │   ├── main/
+│   │   │   │   ├── java/com/algo/trading/gui/
+│   │   │   │   │   ├── MainApp.java
+│   │   │   │   │   └── MainController.java
+│   │   │   │   └── resources/fxml/MainView.fxml
+│   │   │   └── test/java/com/algo/trading/gui/
+│   │   └── build.gradle
+│   ├── indicators/
+│   │   ├── src/
+│   │   │   ├── main/java/com/algo/trading/indicators/service/IndicatorService.java
+│   │   │   └── test/java/com/algo/trading/indicators/
+│   │   └── build.gradle
+│   ├── live/
+│   │   ├── src/
+│   │   │   ├── main/java/com/algo/trading/live/
+│   │   │   │   ├── config/LiveProperties.java
+│   │   │   │   ├── controller/LiveController.java
+│   │   │   │   ├── service/LiveTradingService.java
+│   │   │   │   └── LiveApplication.java
+│   │   │   └── resources/application.yml
+│   │   └── build.gradle
+│   ├── ml/
+│   │   ├── src/
+│   │   │   ├── main/java/com/algo/trading/ml/
+│   │   │   │   ├── config/BatchConfig.java
+│   │   │   │   ├── config/MlProperties.java
+│   │   │   │   ├── controller/MlController.java
+│   │   │   │   ├── step/FeatureExtractor.java
+│   │   │   │   ├── step/ModelTrainer.java
+│   │   │   │   └── MlApplication.java
+│   │   │   └── resources/application.yml
+│   │   └── test/
+│   │       ├── java/com/algo/trading/ml/controller/MlControllerIntegrationTest.java
+│   │       └── resources/application-test.yml
+│   │   └── build.gradle
+│   └── paper/
+│       ├── src/
+│       │   ├── main/java/com/algo/trading/paper/
+│       │   │   ├── config/KiteConfig.java
+│       │   │   ├── config/PaperProperties.java
+│       │   │   ├── controller/PaperController.java
+│       │   │   ├── service/PaperTradingService.java
+│       │   │   └── PaperApplication.java
+│       │   └── resources/application.yml
+│       └── test/java/com/algo/trading/paper/
+│       └── build.gradle
+├── HELP.md
+├── README.md
+├── application.yml             # profile‐aware (dev/paper/live) defaults
 ├── build.gradle                # root build, common plugins & dependency management
 ├── docker-compose.yml          # MySQL, Redis, Kafka, Zookeeper
-├── application.yml             # profile‐aware (dev/paper/live) defaults
-│
-└── modules/
-    ├── common/                 # shared models, configs, utils
-    │   ├── build.gradle
-    │   └── src/
-    │       ├── main/
-    │       │   ├── java/
-    │       │   │   └── com/algo/trading/common/
-    │       │   │       ├── config/
-    │       │   │       │   ├── AppProperties.java
-    │       │   │       │   └── SharedConfig.java
-    │       │   │       └── model/
-    │       │   │           ├── Order.java
-    │       │   │           ├── InstrumentType.java
-    │       │   │           └── Side.java
-    │       │   └── resources/
-    │       │       └── application.yml   # module‐specific overrides if any
-    │       └── test/
-    │           └── java/...             # unit tests for common code
-    │
-    ├── auth/                   # Zerodha login & data retrieval
-    │   ├── build.gradle
-    │   └── src/
-    │       ├── main/
-    │       │   ├── java/
-    │       │   │   └── com/algo/trading/auth/
-    │       │   │       ├── AuthApplication.java
-    │       │   │       ├── AuthProperties.java
-    │       │   │       └── KiteService.java
-    │       │   └── resources/
-    │       │       ├── application-dev.yml
-    │       │       ├── application-paper.yml
-    │       │       └── application-live.yml
-    │       └── test/…                # tests for auth flows
-    │
-    ├── indicators/             # TA4J indicator registry & calculations
-    │   ├── build.gradle
-    │   └── src/
-    │       ├── main/java/com/algo/trading/indicators/
-    │       │   ├── IndicatorFactory.java
-    │       │   ├── CachedSuperTrendIndicator.java
-    │       │   └── …  
-    │       └── test/…            # indicator unit tests
-    │
-    ├── ml/                     # feature pipeline & Weka/DL4J training
-    │   ├── build.gradle
-    │   └── src/
-    │       ├── main/java/com/algo/trading/ml/
-    │       │   ├── BatchConfig.java
-    │       │   ├── FeatureExtractor.java
-    │       │   └── ModelService.java
-    │       └── test/…
-    │
-    ├── backtest/               # Spring Batch jobs + TA4J backtesting
-    │   ├── build.gradle
-    │   └── src/
-    │       ├── main/java/com/algo/trading/backtest/
-    │       │   ├── BacktestJobConfig.java
-    │       │   └── BacktestService.java
-    │       └── test/…
-    │
-    ├── paper/                  # real-time simulation over Kafka
-    │   ├── build.gradle
-    │   └── src/
-    │       ├── main/java/com/algo/trading/paper/
-    │       │   ├── PaperTradingService.java
-    │       │   └── …  
-    │       └── test/…
-    │
-    ├── live/                   # actual order execution with Resilience4j
-    │   ├── build.gradle
-    │   └── src/
-    │       ├── main/java/com/algo/trading/live/
-    │       │   ├── LiveTradingService.java
-    │       │   └── …  
-    │       └── test/…
-    │
-    └── gui/                    # JavaFX desktop app
-        ├── build.gradle
-        └── src/
-            ├── main/java/com/algo/trading/gui/
-            │   ├── GuiApplication.java
-            │   └── controllers/…
-            └── main/resources/
-                ├── fxml/…    # .fxml view files
-                └── static/…  # charts, icons, CSS, etc.
+└── settings.gradle
 ```
 
 ---
