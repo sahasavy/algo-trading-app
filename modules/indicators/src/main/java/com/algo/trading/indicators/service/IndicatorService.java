@@ -3,19 +3,19 @@ package com.algo.trading.indicators.service;
 import org.springframework.stereotype.Service;
 import org.ta4j.core.BarSeries;
 import org.ta4j.core.indicators.*;
-import org.ta4j.core.num.DoubleNum;
-import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
-import org.ta4j.core.indicators.averages.SMAIndicator;
-import org.ta4j.core.indicators.averages.EMAIndicator;
 import org.ta4j.core.indicators.adx.ADXIndicator;
-import org.ta4j.core.indicators.volume.VWAPIndicator;
-import org.ta4j.core.indicators.volume.OnBalanceVolumeIndicator;
-import org.ta4j.core.indicators.volume.MoneyFlowIndexIndicator;
-import org.ta4j.core.indicators.supertrend.SuperTrendIndicator;
+import org.ta4j.core.indicators.averages.EMAIndicator;
+import org.ta4j.core.indicators.averages.SMAIndicator;
+import org.ta4j.core.indicators.bollinger.BollingerBandsLowerIndicator;
 import org.ta4j.core.indicators.bollinger.BollingerBandsMiddleIndicator;
 import org.ta4j.core.indicators.bollinger.BollingerBandsUpperIndicator;
-import org.ta4j.core.indicators.bollinger.BollingerBandsLowerIndicator;
+import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.indicators.statistics.StandardDeviationIndicator;
+import org.ta4j.core.indicators.supertrend.SuperTrendIndicator;
+import org.ta4j.core.indicators.volume.MoneyFlowIndexIndicator;
+import org.ta4j.core.indicators.volume.OnBalanceVolumeIndicator;
+import org.ta4j.core.indicators.volume.VWAPIndicator;
+import org.ta4j.core.num.DoubleNum;
 
 @Service
 public class IndicatorService {

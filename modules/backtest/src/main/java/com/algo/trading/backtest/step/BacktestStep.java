@@ -10,17 +10,10 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
-import org.ta4j.core.Bar;
-import org.ta4j.core.BarSeries;
-import org.ta4j.core.BaseBar;
-import org.ta4j.core.BaseBarSeriesBuilder;
-import org.ta4j.core.Position;
-import org.ta4j.core.TradingRecord;
+import org.ta4j.core.*;
 import org.ta4j.core.backtest.BarSeriesManager;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.num.DoubleNum;
-import org.ta4j.core.BaseStrategy;
-import org.ta4j.core.Strategy;
 import org.ta4j.core.rules.CrossedUpIndicatorRule;
 
 import java.time.Duration;
@@ -70,7 +63,7 @@ public class BacktestStep implements Tasklet {
         // 2. Define a simple SMA crossover strategy
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
         var shortSma = indicatorService.sma(series, 10);
-        var longSma  = indicatorService.sma(series, 30);
+        var longSma = indicatorService.sma(series, 30);
         Strategy strategy = new BaseStrategy(
                 new CrossedUpIndicatorRule(shortSma, longSma),
                 new CrossedUpIndicatorRule(longSma, shortSma)
