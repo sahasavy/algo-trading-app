@@ -2,6 +2,7 @@ package com.algo.trading.auth.service;
 
 import com.algo.trading.auth.AuthProperties;
 import com.algo.trading.auth.exception.AuthException;
+import com.algo.trading.auth.model.SessionToken;
 import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.User;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -17,80 +20,60 @@ import java.io.IOException;
 public class KiteService {
 
     private final AuthProperties props;
+    private final TokenService tokenService;
 
     /**
-     * Builds the Zerodha login URL.
+     * (Step - 1) Build the Zerodha login URL.
      */
     public String getLoginUrl() {
-        log.debug("Generating login URL (apiKey={}, redirectUri={})", props.getApiKey(), props.getRedirectUri());
-
-        if (props.getApiKey() == null || props.getApiKey().isBlank()) {
-            throw new AuthException("API key is not configured");
-        }
-        if (props.getRedirectUri() == null || props.getRedirectUri().isBlank()) {
-            throw new AuthException("Redirect URI is not configured");
-        }
-
-        KiteConnect kite = new KiteConnect(props.getApiKey());
-//        kite.setRedirectUri(props.getRedirectUri());
-
-        String url = kite.getLoginURL();
-        log.info("Login URL generated");
-        return url;
+        if (props.getApiKey() == null || props.getApiKey().isBlank())
+            throw new AuthException("API key not configured");
+        return new KiteConnect(props.getApiKey()).getLoginURL();
     }
 
     /**
-     * Exchanges a one-time request token for an access token & public token.
+     * (Step - 2) Exchange <code>request_token</code> for access/public tokens and cache them.
      */
     public void generateSession(String requestToken) {
-        log.info("Generating session for requestToken={}", requestToken);
+        log.info("Started generating user session for {}", props.getUserName());
 
-        if (requestToken == null || requestToken.isBlank()) {
-            throw new AuthException("Missing or empty request token");
-        }
-        if (props.getApiKey() == null || props.getApiSecret() == null) {
+        if (requestToken == null || requestToken.isBlank())
+            throw new AuthException("Missing request token");
+        if (props.getApiKey() == null || props.getApiSecret() == null)
             throw new AuthException("API credentials not configured");
-        }
 
-        KiteConnect kite = new KiteConnect(props.getApiKey());
-//        kite.setRedirectUri(props.getRedirectUri());
         try {
+            KiteConnect kite = new KiteConnect(props.getApiKey());
             User session = kite.generateSession(requestToken, props.getApiSecret());
 
-            // Sanity check
-            if (session == null || session.accessToken == null || session.publicToken == null) {
+            if (session == null || session.accessToken == null)
                 throw new AuthException("Invalid session response from Kite Connect");
-            }
 
-            log.debug("Session acquired: accessToken={}, publicToken={}", session.accessToken, session.publicToken);
-            props.setAccessToken(session.accessToken);
-            props.setPublicToken(session.publicToken);
+            log.debug("Fetched User's accessToken: {}", session.accessToken);
+            log.debug("Fetched User's publicToken: {}", session.publicToken);
 
-            log.info("Session stored in AuthProperties"); // TODO - Can save to some db, or cache, or temporary file
+            tokenService.save(new SessionToken(props.getUserName(), session.accessToken, session.publicToken,
+                    LocalDate.now(ZoneId.systemDefault())));
+
+            log.info("User session generated successfully for {}", props.getUserName());
         } catch (KiteException e) {
-            log.error("KiteException during session generation", e);
-            throw new AuthException("Failed to generate session: request token may have expired or is invalid", e);
+            throw new AuthException("Failed to generate session: request token may have expired", e);
         } catch (IOException e) {
-            log.error("IOException during session generation", e);
             throw new AuthException("Network error while generating session", e);
         }
     }
 
     /**
-     * Returns a pre-configured client ready for authenticated calls.
+     * (Step - 3) Get a ready-to-use client for any downstream module.
      */
     public KiteConnect getAuthenticatedClient() {
-        log.debug("Creating authenticated KiteConnect client");
-
-        if (props.getAccessToken() == null || props.getAccessToken().isBlank()) {
-            throw new AuthException("No access token available; user is not logged in");
-        }
+        SessionToken sessionToken = tokenService.current();
+        if (sessionToken == null || sessionToken.getAccessToken() == null)
+            throw new AuthException("User not logged in - no access token in cache");
 
         KiteConnect kite = new KiteConnect(props.getApiKey());
-        kite.setAccessToken(props.getAccessToken());
-        kite.setPublicToken(props.getPublicToken());
-
-        log.info("Authenticated client ready (publicToken={})", props.getPublicToken());
+        kite.setAccessToken(sessionToken.getAccessToken());
+        kite.setPublicToken(sessionToken.getPublicToken());
         return kite;
     }
 }

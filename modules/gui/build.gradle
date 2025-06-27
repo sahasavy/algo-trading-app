@@ -14,7 +14,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.0"
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:3.5.0'
     }
 }
 
@@ -28,20 +28,23 @@ dependencies {
     // JSON serialization
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 
+    // Google Authenticator library for TOTP generation
+    implementation 'com.warrenstrange:googleauth:1.5.0'
+
     // Lombok for boilerplate reduction
     compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 javafx {
-    version = "21.0.7"
+    version = '21.0.7'
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.web']
     configurations = ['implementation', 'testImplementation']
 }
 
 application {
-    mainClass = "com.algo.trading.gui.MainApp"
-    applicationDefaultJvmArgs = [
-            '--add-modules=javafx.controls,javafx.fxml'
-    ]
+    mainClass = 'com.algo.trading.gui.MainApp'
+    applicationDefaultJvmArgs = ['--add-modules=javafx.controls,javafx.fxml']
 }

@@ -2,13 +2,11 @@ package com.algo.trading.auth.controller;
 
 import com.algo.trading.auth.exception.AuthException;
 import com.algo.trading.auth.service.KiteService;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
+import com.algo.trading.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
@@ -17,17 +15,16 @@ import java.io.IOException;
 public class AuthController {
 
     private final KiteService kiteService;
+    private final TokenService tokenService;
 
     /**
-     * Endpoint to fetch the Zerodha login URL.
+     * ➜  step-1: give GUI the login URL
      */
     @GetMapping("/login")
     public ResponseEntity<String> loginUrl() {
         try {
-            log.info("Started user login process");
-            String url = kiteService.getLoginUrl();
-            log.info("Provided login URL to client");
-            return ResponseEntity.ok(url);
+            log.info("Building login URL");
+            return ResponseEntity.ok(kiteService.getLoginUrl());
         } catch (Exception e) {
             log.error("Failed to generate login URL", e);
             throw new AuthException("Failed to generate login URL", e);
@@ -35,14 +32,21 @@ public class AuthController {
     }
 
     /**
-     * Callback endpoint Zerodha will redirect to with a request_token query param.
-     * We exchange it for a session here.
+     * ➜  step-2: Zerodha redirects back with request_token
      */
     @GetMapping("/session")
     public ResponseEntity<String> createSession(@RequestParam("request_token") String requestToken) {
+        log.info("Received callback with request_token={}", requestToken);
+
+        // Idempotency guard — silently ignore duplicates
+        if (tokenService.isRequestTokenSeen(requestToken)) {
+            log.info("Request token already processed — ignoring duplicate");
+            return ResponseEntity.ok("ALREADY_DONE");
+        }
+
         try {
-            log.info("Received callback with request_token={}", requestToken);
             kiteService.generateSession(requestToken);
+            tokenService.markRequestTokenSeen(requestToken);
             log.info("Session successfully created");
             return ResponseEntity.ok("OK");
         } catch (Exception e) {
