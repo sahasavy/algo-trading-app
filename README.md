@@ -27,14 +27,19 @@ algo-trading-app/
 │   │   │   │   │       └── algo/
 │   │   │   │   │           └── trading/
 │   │   │   │   │               └── auth/
+│   │   │   │   │                   ├── config/
+│   │   │   │   │                   │   └── CacheConfig.java
 │   │   │   │   │                   ├── controller/
 │   │   │   │   │                   │   └── AuthController.java
 │   │   │   │   │                   ├── exception/
 │   │   │   │   │                   │   ├── AuthErrorResponse.java
 │   │   │   │   │                   │   ├── AuthException.java
 │   │   │   │   │                   │   └── GlobalExceptionHandler.java
+│   │   │   │   │                   ├── model/
+│   │   │   │   │                   │   └── SessionToken.java
 │   │   │   │   │                   ├── service/
-│   │   │   │   │                   │   └── KiteService.java
+│   │   │   │   │                   │   ├── KiteService.java
+│   │   │   │   │                   │   └── TokenService.java
 │   │   │   │   │                   ├── AuthApplication.java
 │   │   │   │   │                   └── AuthProperties.java
 │   │   │   │   └── resources/
@@ -78,13 +83,19 @@ algo-trading-app/
 │   │   │   │   │       └── algo/
 │   │   │   │   │           └── trading/
 │   │   │   │   │               └── common/
+│   │   │   │   │                   ├── brokerage/
+│   │   │   │   │                   │   ├── BrokerageCalculator.java
+│   │   │   │   │                   │   ├── BrokerageConfig.java
+│   │   │   │   │                   │   ├── FeeStructure.java
+│   │   │   │   │                   │   ├── OrderParams.java
+│   │   │   │   │                   │   └── ZerodhaBrokerageCalculator.java
 │   │   │   │   │                   ├── config/
 │   │   │   │   │                   │   ├── AppProperties.java
 │   │   │   │   │                   │   └── SharedConfig.java
 │   │   │   │   │                   ├── model/
 │   │   │   │   │                   │   ├── InstrumentType.java
 │   │   │   │   │                   │   ├── Order.java
-│   │   │   │   │                   │   ├── Side.java
+│   │   │   │   │                   │   ├── OrderSide.java
 │   │   │   │   │                   │   └── TradeData.java
 │   │   │   │   │                   └── repository/
 │   │   │   │   │                       └── TradeDataRepository.java
@@ -94,13 +105,16 @@ algo-trading-app/
 │   │   │   │       │       ├── changes/
 │   │   │   │       │       │   └── 20250624_create_trade_data_table.yaml
 │   │   │   │       │       └── db.changelog-master.yaml
-│   │   │   │       └── application.yml
+│   │   │   │       ├── application.yml
+│   │   │   │       └── brokerage-schedule.yml
 │   │   │   └── test/
 │   │   │       └── java/
 │   │   │           └── com/
 │   │   │               └── algo/
 │   │   │                   └── trading/
 │   │   │                       └── common/
+│   │   │                           └── brokerage/
+│   │   │                               └── ZerodhaBrokerageCalculatorTest.java
 │   │   └── build.gradle
 │   ├── gui/
 │   │   ├── src/
@@ -110,10 +124,14 @@ algo-trading-app/
 │   │   │   │   │       └── algo/
 │   │   │   │   │           └── trading/
 │   │   │   │   │               └── gui/
+│   │   │   │   │                   ├── autologin/
+│   │   │   │   │                   │   └── AutoLoginManager.java
 │   │   │   │   │                   ├── config/
 │   │   │   │   │                   │   └── GuiConfig.java
 │   │   │   │   │                   ├── controller/
 │   │   │   │   │                   │   └── MainController.java
+│   │   │   │   │                   ├── util/
+│   │   │   │   │                   │   └── Utilities.java
 │   │   │   │   │                   ├── GuiApplication.java
 │   │   │   │   │                   └── MainApp.java
 │   │   │   │   └── resources/
