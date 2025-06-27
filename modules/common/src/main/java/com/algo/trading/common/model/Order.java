@@ -18,5 +18,5 @@ public class Order {
     private String exchange;
     private BigDecimal price;
     private int qty;
-    private Side side;
+    private OrderSide side;
 }
