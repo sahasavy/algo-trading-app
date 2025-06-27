@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app")
 @Data
 public class AppProperties {
-    /** Application name (e.g. algo-trading-app) */
+    // Application name (e.g. algo-trading-app)
     private String name;
-    /** Short description */
     private String description;
 }

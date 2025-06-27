@@ -1,8 +1,8 @@
 package com.algo.trading.paper.service;
 
-import com.algo.trading.paper.config.PaperProperties;
-import com.algo.trading.indicators.service.IndicatorService;
 import com.algo.trading.auth.service.KiteService;
+import com.algo.trading.indicators.service.IndicatorService;
+import com.algo.trading.paper.config.PaperProperties;
 import com.zerodhatech.kiteconnect.KiteConnect;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,11 @@ public class PaperTradingService {
     private final PaperProperties props;
     private final IndicatorService indicatorService;
     private final KiteService kiteService;
-
-    private KiteConnect kiteConnect;
     private final BarSeries series = new BaseBarSeriesBuilder()
             .withName("paper_series")
             .build();
     private final AtomicBoolean running = new AtomicBoolean(false);
+    private KiteConnect kiteConnect;
 
     @PostConstruct
     public void init() {

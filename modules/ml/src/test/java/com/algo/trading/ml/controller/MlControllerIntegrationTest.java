@@ -30,7 +30,7 @@
 //        "spring.liquibase.enabled=false"
 //})
 //@AutoConfigureMockMvc
-////@ActiveProfiles("test")    // ← pick up application-test.yml
+/// /@ActiveProfiles("test")    // ← pick up application-test.yml
 //public class MlControllerIntegrationTest {
 //
 //    @Autowired

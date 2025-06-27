@@ -35,6 +35,16 @@ public class MainController {
         this.guiConfig = guiConfig;
     }
 
+    private static String extractRequestToken(String callbackUrl) {
+        for (String reqTokenStr : callbackUrl.split("\\?")[1].split("&"))
+            if (reqTokenStr.startsWith("request_token="))
+                return URLDecoder.decode(reqTokenStr.split("=", 2)[1],
+                        StandardCharsets.UTF_8);
+        return null;
+    }
+
+    /* ---------- UI action ----------------------------------- */
+
     @FXML
     public void initialize() {
         webView.setVisible(false);
@@ -43,8 +53,6 @@ public class MainController {
         webView.getEngine().locationProperty()
                 .addListener(buildRedirectListener());
     }
-
-    /* ---------- UI action ----------------------------------- */
 
     @FXML
     void onLogin(ActionEvent ignored) {
@@ -64,8 +72,6 @@ public class MainController {
                 System.getenv("KITE_TOTP_SEED"))
                 .register();
     }
-
-    /* -------------------------------------------------------- */
 
     private ChangeListener<String> buildRedirectListener() {
         final String cbPrefix = guiConfig.getAuthBaseUrl() + "/auth/session";
@@ -102,14 +108,6 @@ public class MainController {
                 }
             }
         };
-    }
-
-    private static String extractRequestToken(String callbackUrl) {
-        for (String reqTokenStr : callbackUrl.split("\\?")[1].split("&"))
-            if (reqTokenStr.startsWith("request_token="))
-                return URLDecoder.decode(reqTokenStr.split("=", 2)[1],
-                        StandardCharsets.UTF_8);
-        return null;
     }
 
     private void showError(String msg) {

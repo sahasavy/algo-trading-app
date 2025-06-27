@@ -15,6 +15,10 @@ public class MainApp extends Application {
 
     private ConfigurableApplicationContext springContext;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void init() {
         log.info("Starting Spring context for GUI");
@@ -43,9 +47,5 @@ public class MainApp extends Application {
         log.info("Shutting down Spring context and exiting");
         springContext.close();
         Platform.exit();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

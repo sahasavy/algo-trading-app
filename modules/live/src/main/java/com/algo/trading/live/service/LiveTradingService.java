@@ -1,8 +1,8 @@
 package com.algo.trading.live.service;
 
 import com.algo.trading.auth.service.KiteService;
-import com.algo.trading.live.config.LiveProperties;
 import com.algo.trading.indicators.service.IndicatorService;
+import com.algo.trading.live.config.LiveProperties;
 import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.Order;
@@ -32,12 +32,11 @@ public class LiveTradingService {
     private final LiveProperties props;
     private final IndicatorService indicatorService;
     private final KiteService kiteService;
-
-    private KiteConnect kiteConnect;
     private final BarSeries series = new BaseBarSeriesBuilder()
             .withName("live_series")
             .build();
     private final AtomicBoolean running = new AtomicBoolean(false);
+    private KiteConnect kiteConnect;
 
     @PostConstruct
     public void init() {
