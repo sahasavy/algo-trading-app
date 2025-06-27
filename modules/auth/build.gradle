@@ -18,8 +18,13 @@ dependencyManagement {
 }
 
 dependencies {
-    // Expose REST endpoints for auth flow
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring Cache abstraction
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    // Fast in-memory cache (swap for Redis later)
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
 
     // Zerodha Kite Connect SDK
     implementation 'com.zerodhatech.kiteconnect:kiteconnect:3.5.0'

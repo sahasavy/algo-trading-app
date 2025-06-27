@@ -267,6 +267,21 @@ docker-compose rm -f kafka
 
 ---
 
+### 🚀 Build and Run automated login flow
+
+```bash
+# From project root:
+./gradlew clean build --refresh-dependencies
+
+export KITE_UID=AB1234          # Zerodha login ID
+export KITE_PWD=SuperSecret!    # Zerodha password
+export KITE_TOTP_SEED=JBSWY3DPEHPK3PXP   # 32-char base-32 seed
+
+./gradlew :modules:gui:run
+```
+
+---
+
 ### 🚀 Run & Build
 
 ```bash
