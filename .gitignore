@@ -30,6 +30,7 @@ replay_pid*
 /modules/gui/build/
 /modules/indicators/build/
 /modules/live/build/
+/modules/market/build/
 /modules/ml/build/
 /modules/paper/build/
 /modules/build/

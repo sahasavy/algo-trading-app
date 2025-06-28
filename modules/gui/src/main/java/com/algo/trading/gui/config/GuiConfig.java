@@ -8,18 +8,21 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GuiConfig {
 
-    @Value("${auth.baseUrl}")
+    @Value("${services.auth.baseUrl}")
     private String authBaseUrl;
 
-    @Value("${backtest.baseUrl}")
-    private String backtestBaseUrl;
+    @Value("${services.market.baseUrl}")
+    private String marketBaseUrl;
 
-    @Value("${ml.baseUrl}")
+    @Value("${services.ml.baseUrl}")
     private String mlBaseUrl;
 
-    @Value("${paper.baseUrl}")
+    @Value("${services.backtest.baseUrl}")
+    private String backtestBaseUrl;
+
+    @Value("${services.paper.baseUrl}")
     private String paperBaseUrl;
 
-    @Value("${live.baseUrl}")
+    @Value("${services.live.baseUrl}")
     private String liveBaseUrl;
 }
