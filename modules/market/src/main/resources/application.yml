@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:${user.home}/.algo/cache/bars;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8082
+  servlet:
+    context-path: /market-service
+
+logging:
+  level:
+    root: INFO
+    com.algo.trading.live: DEBUG

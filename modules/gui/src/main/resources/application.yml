@@ -3,13 +3,16 @@ logging:
     root: INFO
     com.algo.trading.gui: DEBUG
 
-auth:
-  baseUrl: http://localhost:8081/auth-service
-backtest:
-  baseUrl: http://localhost:8082/backtest-service
-ml:
-  baseUrl: http://localhost:8083/ml-service
-paper:
-  baseUrl: http://localhost:8084/paper-service
-live:
-  baseUrl: http://localhost:8085/live-service
+services:
+  auth:
+    baseUrl: http://localhost:8081/auth-service
+  market:
+    baseUrl: http://localhost:8082/market-service
+  ml:
+    baseUrl: http://localhost:8083/ml-service
+  backtest:
+    baseUrl: http://localhost:8084/backtest-service
+  paper:
+    baseUrl: http://localhost:8085/paper-service
+  live:
+    baseUrl: http://localhost:8086/live-service
