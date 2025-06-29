@@ -39,6 +39,21 @@ public class KiteTickerClient {
         connect();
     }
 
+    /**
+     * Called by TokenExpiryListener when a new session is generated.
+     */
+    public void forceReconnect() {
+        try {
+            log.info("Closing WS so it reconnects with fresh token");
+
+            if (websocket.isConnectionOpen()) {
+                websocket.disconnect();
+            }
+        } catch (Exception ignored) {
+            // next scheduleReconnect() will handle retry
+        }
+    }
+
     private void connect() {
         ArrayList<Long> tokens = new ArrayList<>(tickStreamConfig.getTokens());
 

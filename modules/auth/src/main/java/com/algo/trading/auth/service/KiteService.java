@@ -1,6 +1,7 @@
 package com.algo.trading.auth.service;
 
 import com.algo.trading.auth.AuthProperties;
+import com.algo.trading.auth.event.TokenExpiredEvent;
 import com.algo.trading.auth.exception.AuthException;
 import com.algo.trading.auth.model.SessionToken;
 import com.zerodhatech.kiteconnect.KiteConnect;
@@ -8,6 +9,7 @@ import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,6 +23,7 @@ public class KiteService {
 
     private final AuthProperties props;
     private final TokenService tokenService;
+    private final ApplicationEventPublisher eventPublisher;
 
     /**
      * (Step - 1) Build the Zerodha login URL.
@@ -56,6 +59,9 @@ public class KiteService {
                     LocalDate.now(ZoneId.systemDefault())));
 
             log.info("User session generated successfully for {}", props.getUserName());
+
+            /* notify other modules that today’s token is ready */
+            eventPublisher.publishEvent(new TokenExpiredEvent(this));
         } catch (KiteException e) {
             throw new AuthException("Failed to generate session: request token may have expired", e);
         } catch (IOException e) {

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class MainController {
     private Button loginButton;
     @FXML
     private WebView webView;
+    @FXML
+    private TextArea liveTickArea;
 
     public MainController(GuiConfig guiConfig) {
         this.guiConfig = guiConfig;
@@ -71,6 +74,11 @@ public class MainController {
         new AutoLoginManager(eng, System.getenv("KITE_UID"), System.getenv("KITE_PWD"),
                 System.getenv("KITE_TOTP_SEED"))
                 .register();
+    }
+
+    public void appendLiveTick(String line) {
+        if (liveTickArea != null)
+            liveTickArea.appendText(line);
     }
 
     private ChangeListener<String> buildRedirectListener() {
