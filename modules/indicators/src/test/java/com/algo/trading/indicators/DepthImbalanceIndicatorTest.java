@@ -28,10 +28,23 @@ class DepthImbalanceIndicatorTest {
         assertEquals(zero, ind.getValue(1));
     }
 
-    /* helper: one-minute bar with given close price */
-    private static Bar makeBar(double close) {
-        Num c = DoubleNum.valueOf(close);
-        return new BaseBar(Duration.ofMinutes(1), ZonedDateTime.now().toInstant(),
-                c, c, c, c, DoubleNum.valueOf(1));
+    /* helper: create a one-minute bar with the same OHLC price */
+    private static Bar makeBar(double price) {
+
+        Num p = DoubleNum.valueOf(price);
+        Num one = DoubleNum.valueOf(1);
+        Num z = DoubleNum.valueOf(0);
+
+        return new BaseBar(
+                Duration.ofMinutes(1),
+                ZonedDateTime.now().toInstant(),
+                p,   // open
+                p,   // high
+                p,   // low
+                p,   // close
+                one, // volume
+                z,   // amount
+                1L   // trades
+        );
     }
 }
