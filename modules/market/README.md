@@ -1,4 +1,4 @@
-# market-service
+# market-data-service
 
 Market service is responsible for historical & live ticks with simple rate-limit
 handling

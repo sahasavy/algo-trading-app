@@ -295,6 +295,7 @@ export KITE_UID=AB1234          # Zerodha login ID
 export KITE_PWD=SuperSecret!    # Zerodha password
 export KITE_TOTP_SEED=JBSWY3DPEHPK3PXP   # 32-char base-32 seed
 
+./gradlew :modules:auth:bootRun # separate terminal
 ./gradlew :modules:gui:run
 ```
 
@@ -307,11 +308,12 @@ export KITE_TOTP_SEED=JBSWY3DPEHPK3PXP   # 32-char base-32 seed
 ./gradlew clean build --refresh-dependencies
 
 # In separate shells:
-./gradlew :modules:auth:bootRun
-./gradlew :modules:backtest:bootRun
-./gradlew :modules:ml:bootRun
-./gradlew :modules:paper:bootRun
-./gradlew :modules:live:bootRun
+./gradlew :modules:auth:bootRun # separate terminal
+./gradlew :modules:market:bootRun # separate terminal
+./gradlew :modules:backtest:bootRun # separate terminal
+./gradlew :modules:ml:bootRun # separate terminal
+./gradlew :modules:paper:bootRun # separate terminal
+./gradlew :modules:live:bootRun # separate terminal
 
 # Finally start the GUI:
 ./gradlew :modules:gui:run

@@ -12,7 +12,7 @@ public class TokenExpiryListener {
     private final KiteTickerClient client;
 
     @EventListener
-    public void onTokenExpired(TokenExpiredEvent e) {
-//        client.forceReconnect(); // TODO - add this
+    public void onTokenExpired(TokenExpiredEvent event) {
+        client.forceReconnect();
     }
 }

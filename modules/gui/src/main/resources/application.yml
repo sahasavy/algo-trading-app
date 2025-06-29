@@ -7,7 +7,7 @@ services:
   auth:
     baseUrl: http://localhost:8081/auth-service
   market:
-    baseUrl: http://localhost:8082/market-service
+    baseUrl: http://localhost:8082/market-data-service
   ml:
     baseUrl: http://localhost:8083/ml-service
   backtest:
