@@ -1,7 +1,7 @@
 package com.algo.trading.common.brokerage;
 
-import com.algo.trading.common.model.InstrumentType;
-import com.algo.trading.common.model.OrderSide;
+import com.algo.trading.common.model.enums.InstrumentType;
+import com.algo.trading.common.model.enums.OrderSide;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

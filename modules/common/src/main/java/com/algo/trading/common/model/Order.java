@@ -1,5 +1,7 @@
 package com.algo.trading.common.model;
 
+import com.algo.trading.common.model.enums.InstrumentType;
+import com.algo.trading.common.model.enums.OrderSide;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,25 +1,26 @@
 package com.algo.trading.auth.config;
 
+import com.algo.trading.auth.event.TokenExpiredEvent;
 import com.algo.trading.auth.service.KiteService;
 import com.zerodhatech.kiteconnect.KiteConnect;
 import com.zerodhatech.ticker.KiteTicker;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class AuthKiteBeanConfig {
 
     private final KiteService kiteService;
-
-    public AuthKiteBeanConfig(KiteService ks) {
-        this.kiteService = ks;
-    }
+    private final ApplicationEventPublisher publisher;
 
     /**
      * Gives any other module an authenticated KiteConnect instance.
      */
     @Bean
-    public KiteConnect authenticatedKite() {
+    public KiteConnect kiteConnect() {
         return kiteService.getAuthenticatedClient();
     }
 
@@ -28,7 +29,14 @@ public class AuthKiteBeanConfig {
      */
     @Bean
     public KiteTicker kiteTicker() {
-        KiteConnect kite = kiteService.getAuthenticatedClient();
-        return new KiteTicker(kite.getApiKey(), kite.getAccessToken());
+        KiteConnect kiteConnect = kiteService.getAuthenticatedClient();
+        return new KiteTicker(kiteConnect.getApiKey(), kiteConnect.getAccessToken());
+    }
+
+    /**
+     * called once per day by KiteService when new session generated
+     */
+    public void publishExpiryEvent() {
+        publisher.publishEvent(new TokenExpiredEvent(this));
     }
 }

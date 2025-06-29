@@ -1,4 +1,4 @@
-package com.algo.trading.common.model;
+package com.algo.trading.common.model.enums;
 
 public enum InstrumentType {
     EQUITY_DELIVERY,   // equity delivery (CNC)

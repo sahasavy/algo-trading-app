@@ -1,6 +1,6 @@
 package com.algo.trading.common.brokerage;
 
-import com.algo.trading.common.model.InstrumentType;
+import com.algo.trading.common.model.enums.InstrumentType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.Getter;
@@ -27,8 +27,8 @@ public final class BrokerageConfig {
 
     private BrokerageConfig(String classpathResource) {
         try (InputStream in = getClass().getResourceAsStream(classpathResource)) {
-            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-            YamlRoot root = mapper.readValue(in, YamlRoot.class);
+            ObjectMapper yamlObjectMapper = new ObjectMapper(new YAMLFactory());
+            YamlRoot root = yamlObjectMapper.readValue(in, YamlRoot.class);
             this.gstPercent = root.gst_percent;
 
             root.segments.forEach((k, v) ->

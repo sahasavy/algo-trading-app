@@ -1,6 +1,5 @@
 package com.algo.trading.market.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +12,6 @@ import java.util.Map;
 public class KafkaProducerConfig {
 
     @Bean
-    public ObjectMapper json() {
-        return new ObjectMapper();
-    }
-
-    @Bean
     public ProducerFactory<String, String> pf(TickStreamProperties p) {
         Map<String, Object> cfg = Map.of(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, p.getKafkaBrokers(),
@@ -28,7 +22,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, String> kt(ProducerFactory<String, String> pf) {
+    public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> pf) {
         return new KafkaTemplate<>(pf);
     }
 }

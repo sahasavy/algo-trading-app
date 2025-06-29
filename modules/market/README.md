@@ -52,3 +52,14 @@ KiteTickerClient ─► Tick DTO ─► Kafka topic "tick.raw" ─► consumers 
 ```
 
 TBD
+
+---
+
+## Metrics (Micrometer counters)
+
+Below are the list of metrics exposed at `/actuator/metrics`.
+
+1. tick.published
+2. ws.reconnects
+
+---

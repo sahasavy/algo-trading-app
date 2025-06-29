@@ -1,6 +1,6 @@
 package com.algo.trading.common.brokerage;
 
-import com.algo.trading.common.model.OrderSide;
+import com.algo.trading.common.model.enums.OrderSide;
 
 public final class ZerodhaBrokerageCalculator implements BrokerageCalculator {
 

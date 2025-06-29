@@ -1,6 +1,6 @@
 package com.algo.trading.market.cache;
 
-import com.algo.trading.market.dto.OhlcBar;
+import com.algo.trading.market.model.OhlcBar;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
