@@ -24,3 +24,6 @@ tick-stream:
   kafkaTopic: tick.raw
   kafkaBrokers: localhost:9092
   reconnectDelay: 30s
+
+tick:
+  max-retries: 3       # stop after 3 unsuccessful reconnects

@@ -4,6 +4,9 @@ import com.algo.trading.common.model.dto.DepthDTO;
 import com.algo.trading.common.model.dto.TickDTO;
 import com.algo.trading.common.model.enums.OrderSide;
 import com.algo.trading.market.config.TickStreamProperties;
+import com.algo.trading.market.event.WsConnected;
+import com.algo.trading.market.event.WsDisconnected;
+import com.algo.trading.market.event.WsRetryLimitReached;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.Depth;
 import com.zerodhatech.models.Tick;
@@ -13,13 +16,16 @@ import io.micrometer.core.instrument.Metrics;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @RequiredArgsConstructor
@@ -30,9 +36,14 @@ public class KiteTickerClient {
     private final TickProducer producer;
     private final TickStreamProperties tickStreamConfig;
 
+    private final ApplicationEventPublisher publisher;
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
     private final Counter reconnects = Metrics.counter("ws.reconnects");
+
+    @Value("${tick.max-retries:5}")
+    private int maxRetries;
+
+    private final AtomicInteger retryCount = new AtomicInteger(0);
 
     @PostConstruct
     void start() {
@@ -85,21 +96,54 @@ public class KiteTickerClient {
      */
     private OnConnect handleOnConnectConfigs(ArrayList<Long> instrumentTokens) {
         return () -> {
+            retryCount.set(0);
             websocket.subscribe(instrumentTokens);
             websocket.setMode(instrumentTokens, KiteTicker.modeFull);
+
+            publisher.publishEvent(new WsConnected(this));
+
             log.info("WebSocket connected & subscribed: {}", instrumentTokens);
         };
     }
 
     private OnDisconnect handleDisconnection() {
         log.warn("WS disconnected; reconnecting in {}", tickStreamConfig.getReconnectDelay());
+
+        publisher.publishEvent(new WsDisconnected(this));
+
         scheduleReconnect();
         return null;
     }
 
     private void scheduleReconnect() {
+        int attempt = retryCount.incrementAndGet();
+        if (attempt > maxRetries) {
+            log.error("Max reconnect attempts ({}) reached – giving up.", maxRetries);
+            stopRetries();
+            return;
+        }
+
         reconnects.increment();
+
+        log.info("Scheduling reconnect attempt {}/{} in {}", attempt, maxRetries, tickStreamConfig.getReconnectDelay());
         scheduler.schedule(this::connect, tickStreamConfig.getReconnectDelay().toSeconds(), TimeUnit.SECONDS);
+    }
+
+    /**
+     * Cancels further reconnect attempts and detaches listeners.
+     */
+    private void stopRetries() {
+        try {
+            scheduler.shutdownNow();
+        } catch (Exception ignored) {
+            //handle here.
+        }
+
+        log.info("Websocket retries exhausted: Removing listeners so KiteTicker stops calling it repeatedly");
+        websocket.setOnDisconnectedListener(null);
+        websocket.setOnErrorListener(null);
+
+        publisher.publishEvent(new WsRetryLimitReached(this));
     }
 
     private OnError handleErrors() {

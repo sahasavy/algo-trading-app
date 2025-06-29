@@ -18,7 +18,7 @@
                             <VBox spacing="10.0" AnchorPane.topAnchor="10"
                                   AnchorPane.leftAnchor="10">
                                 <children>
-                                    <Button fx:id="loginButton" text="Login"/>
+                                    <Button fx:id="loginButton" text="Login" onAction="#onLogin"/>
                                     <WebView fx:id="webView"
                                              prefHeight="500.0"
                                              prefWidth="760.0"/>

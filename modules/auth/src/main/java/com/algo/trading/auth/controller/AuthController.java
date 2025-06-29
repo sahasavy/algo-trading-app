@@ -1,6 +1,9 @@
 package com.algo.trading.auth.controller;
 
+import com.algo.trading.auth.AuthProperties;
+import com.algo.trading.auth.dto.AuthTokenDTO;
 import com.algo.trading.auth.exception.AuthException;
+import com.algo.trading.auth.model.SessionToken;
 import com.algo.trading.auth.service.KiteService;
 import com.algo.trading.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,8 @@ public class AuthController {
 
     private final KiteService kiteService;
     private final TokenService tokenService;
+
+    private final AuthProperties props;
 
     /**
      * ➜  step-1: give GUI the login URL
@@ -56,5 +61,20 @@ public class AuthController {
             log.error("Error exchanging request token for session", e);
             throw new AuthException("Failed to create session", e);
         }
+    }
+
+    /**
+     * returns today's token from cache
+     *
+     * @return
+     */
+    @GetMapping("/token")
+    public ResponseEntity<AuthTokenDTO> currentToken() {
+        SessionToken sessionToken = tokenService.current();
+        if (sessionToken == null || sessionToken.getAccessToken() == null)
+            return ResponseEntity.status(404).build();
+
+        return ResponseEntity.ok(new AuthTokenDTO(props.getApiKey(), sessionToken.getAccessToken(),
+                sessionToken.getPublicToken()));
     }
 }
