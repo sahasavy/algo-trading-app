@@ -3,11 +3,11 @@ package com.algo.trading.backtest;
 import com.algo.trading.backtest.spec.RuleSpec;
 import com.algo.trading.indicators.IndicatorFactory;
 import com.algo.trading.indicators.IndicatorKey;
-import com.algo.trading.indicators.Op;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.ta4j.core.*;
-import org.ta4j.core.indicators.ConstantIndicator;
+import org.ta4j.core.indicators.helpers.ConstantIndicator;
+import org.ta4j.core.num.Num;
 import org.ta4j.core.rules.*;
 
 @Component
@@ -18,25 +18,25 @@ public class RuleFactory {
 
     public Rule build(BarSeries series, RuleSpec spec) {
 
-        Indicator<Double> left = resolveIndicator(series, spec.getIndicator(), spec.getLength());
-        Indicator<Double> right = resolveRight(series, spec.getOther());
+        Indicator<Num> left = resolveIndicator(series, spec.getIndicator(), spec.getLength());
+        Indicator<Num> right = resolveRight(series, spec.getOther());
 
         return switch (spec.op()) {
-            case GT -> new OverIndicatorRule(wrap(left), wrap(right));
-            case GTE -> new OverIndicatorRule(wrap(left), wrap(right)).or(
-                    new EqualIndicatorRule(wrap(left), wrap(right)));
-            case LT -> new UnderIndicatorRule(wrap(left), wrap(right));
-            case LTE -> new UnderIndicatorRule(wrap(left), wrap(right)).or(
-                    new EqualIndicatorRule(wrap(left), wrap(right)));
-            case EQ -> new EqualIndicatorRule(wrap(left), wrap(right));
-            case CROSS_OVER -> new CrossedUpIndicatorRule(wrap(left), wrap(right));
-            case CROSS_UNDER -> new CrossedDownIndicatorRule(wrap(left), wrap(right));
+            case GT -> new OverIndicatorRule(left, right);
+            case GTE -> new OverIndicatorRule(left, right).or(
+                    new EqualIndicatorRule(left, right));
+            case LT -> new UnderIndicatorRule(left, right);
+            case LTE -> new UnderIndicatorRule(left, right).or(
+                    new EqualIndicatorRule(left, right));
+            case EQ -> new EqualIndicatorRule(left, right);
+            case CROSS_OVER -> new CrossedUpIndicatorRule(left, right);
+            case CROSS_UNDER -> new CrossedDownIndicatorRule(left, right);
         };
     }
 
     /* ------------------------------------------------------------------ */
 
-    private Indicator<Double> resolveIndicator(BarSeries s, String name, int len) {
+    private Indicator<Num> resolveIndicator(BarSeries s, String name, int len) {
         if (name == null || name.isBlank())
             throw new IllegalArgumentException("Indicator name missing");
         if ("const".equalsIgnoreCase(name))
@@ -44,7 +44,7 @@ public class RuleFactory {
         return indicators.get(s, new IndicatorKey(name, len));
     }
 
-    private Indicator<Double> resolveRight(BarSeries s, String token) {
+    private Indicator<Num> resolveRight(BarSeries s, String token) {
         try {
             double c = Double.parseDouble(token);
             return new ConstantIndicator<>(s, c);
@@ -56,11 +56,7 @@ public class RuleFactory {
         }
     }
 
-    /**
-     * TA4J Rule API expects Num-based indicators.
-     */
-    @SuppressWarnings("unchecked")
-    private static Indicator<Num> wrap(Indicator<Double> in) {
-        return i -> Num.valueOf(in.getValue(i));
+    private Indicator<Num> constant(BarSeries s, double v) {
+        return i -> s.numOf(v);
     }
 }

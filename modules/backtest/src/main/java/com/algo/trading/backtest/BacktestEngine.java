@@ -3,16 +3,15 @@ package com.algo.trading.backtest;
 import com.algo.trading.backtest.spec.RuleSpec;
 import com.algo.trading.backtest.spec.StrategySpec;
 import com.algo.trading.common.brokerage.BrokerageCalculator;
-import com.algo.trading.common.brokerage.TradingSegment;
-import com.algo.trading.indicators.Op;
+import com.algo.trading.common.model.enums.InstrumentType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.ta4j.core.*;
-import org.ta4j.core.analysis.criteria.MaximumDrawdownCriterion;
 import org.ta4j.core.backtest.BarSeriesManager;
-import org.ta4j.core.indicators.ConstantIndicator;
+import org.ta4j.core.criteria.MaximumDrawdownCriterion;
 import org.ta4j.core.num.DoubleNum;
 import org.springframework.stereotype.Service;
+import org.ta4j.core.num.Num;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class BacktestEngine {
         Strategy strategy = buildStrategy(series, spec);
 
         BarSeriesManager mgr = new BarSeriesManager(series);
-        TradingRecord rec = mgr.run(strategy, Order.OrderType.BUY, qty);
+        TradingRecord rec = mgr.run(strategy, Trade.TradeType.BUY, qty);
 
         return analyse(series, rec, spec.getDescription(), qty);
     }
@@ -76,7 +75,7 @@ public class BacktestEngine {
             double sell = price(t.getExit());
             double pl = (sell - buy) * qty;
 
-            double cost = brokerage.roundTrip(TradingSegment.EQUITY_INTRADAY,
+            double cost = brokerage.roundTrip(InstrumentType.EQUITY_INTRADAY,
                     qty, buy, sell);
 
             net += pl - cost;
