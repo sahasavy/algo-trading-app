@@ -88,7 +88,7 @@ public class LiveTradingService {
             if (ticks.isEmpty()) return;
 
             // just take the first tick in this batch
-            Tick tick = ticks.getFirst();
+            Tick tick = ticks.getFirst(); // TODO - Why take only the 1st tick in the batch?
 
             Instant now = tick.getTickTimestamp().toInstant();
             Instant minute = now.truncatedTo(ChronoUnit.MINUTES);

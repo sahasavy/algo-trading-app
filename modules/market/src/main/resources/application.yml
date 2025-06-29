@@ -18,3 +18,9 @@ logging:
   level:
     root: INFO
     com.algo.trading.live: DEBUG
+
+tick-stream:
+  tokens: [ 738561 ]        # NIFTY-50 example
+  kafkaTopic: tick.raw
+  kafkaBrokers: localhost:9092
+  reconnectDelay: 30s
