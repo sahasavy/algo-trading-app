@@ -75,7 +75,7 @@ public class KiteTickerClient {
                 scheduleReconnect();
             }
         } catch (Exception ex) {
-            log.error("Initial connect failed", ex);
+            log.error("Initial Websocket connection FAILED – maybe token not ready yet, will retry", ex);
             scheduleReconnect();
         }
     }
