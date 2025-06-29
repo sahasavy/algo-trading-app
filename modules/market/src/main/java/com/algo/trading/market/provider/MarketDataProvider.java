@@ -1,6 +1,6 @@
 package com.algo.trading.market.provider;
 
-import com.algo.trading.market.dto.OhlcBar;
+import com.algo.trading.market.model.OhlcBar;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 
 import java.time.LocalDate;

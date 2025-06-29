@@ -1,6 +1,6 @@
-package com.algo.trading.market.dto;
+package com.algo.trading.common.model.dto;
 
-import com.algo.trading.common.model.OrderSide;
+import com.algo.trading.common.model.enums.OrderSide;
 import lombok.Builder;
 import lombok.Value;
 

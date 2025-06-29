@@ -1,13 +1,15 @@
 package com.algo.trading.market.tick;
 
-import com.algo.trading.common.model.OrderSide;
+import com.algo.trading.common.model.dto.DepthDTO;
+import com.algo.trading.common.model.dto.TickDTO;
+import com.algo.trading.common.model.enums.OrderSide;
 import com.algo.trading.market.config.TickStreamProperties;
-import com.algo.trading.market.dto.DepthDTO;
-import com.algo.trading.market.dto.TickDTO;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
 import com.zerodhatech.models.Depth;
 import com.zerodhatech.models.Tick;
 import com.zerodhatech.ticker.*;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +30,9 @@ public class KiteTickerClient {
     private final TickProducer producer;
     private final TickStreamProperties tickStreamConfig;
 
-    private final ScheduledExecutorService scheduler =
-            Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+    private final Counter reconnects = Metrics.counter("ws.reconnects");
 
     @PostConstruct
     void start() {
@@ -80,6 +83,7 @@ public class KiteTickerClient {
     }
 
     private void scheduleReconnect() {
+        reconnects.increment();
         scheduler.schedule(this::connect, tickStreamConfig.getReconnectDelay().toSeconds(), TimeUnit.SECONDS);
     }
 

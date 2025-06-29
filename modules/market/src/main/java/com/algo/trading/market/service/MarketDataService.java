@@ -1,7 +1,7 @@
 package com.algo.trading.market.service;
 
 import com.algo.trading.market.cache.LocalBarCache;
-import com.algo.trading.market.dto.OhlcBar;
+import com.algo.trading.market.model.OhlcBar;
 import com.algo.trading.market.provider.CandleInterval;
 import com.algo.trading.market.provider.KiteHistoricalClient;
 import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;

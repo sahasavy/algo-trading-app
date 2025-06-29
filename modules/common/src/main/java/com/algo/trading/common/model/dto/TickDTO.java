@@ -1,4 +1,4 @@
-package com.algo.trading.market.dto;
+package com.algo.trading.common.model.dto;
 
 import lombok.Builder;
 import lombok.Value;
