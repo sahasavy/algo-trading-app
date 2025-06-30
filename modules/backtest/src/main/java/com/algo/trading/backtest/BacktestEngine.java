@@ -12,7 +12,7 @@ import org.ta4j.core.criteria.MaximumDrawdownCriterion;
 import org.ta4j.core.num.DoubleNum;
 import org.springframework.stereotype.Service;
 import org.ta4j.core.num.Num;
-
+import org.ta4j.core.*;
 import java.util.ArrayList;
 import java.util.List;
 
