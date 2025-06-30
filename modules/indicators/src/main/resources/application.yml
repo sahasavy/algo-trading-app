@@ -1,4 +1,17 @@
+spring:
+  application:
+    name: indicator-service
+  kafka:
+    bootstrap-servers: localhost:9092
+  cache:
+    type: caffeine
+
+management.endpoints.web.exposure.include: health,info,prometheus
+
 logging:
   level:
     root: INFO
     com.algo.trading.indicators: DEBUG
+
+caffeine:
+  spec: maximumSize=10_000,expireAfterWrite=5m

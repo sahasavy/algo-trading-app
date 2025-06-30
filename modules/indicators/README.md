@@ -57,3 +57,12 @@ Historical loader         Live tick listener
 | `supertrend`     | ATR-based trend indicator           | bars            |
 
 ---
+
+## Running
+
+```
+./gradlew bootRun
+curl "http://localhost:8080/indicators/INFY/1m/SMA?period=20&lookback=50"
+```
+
+---
