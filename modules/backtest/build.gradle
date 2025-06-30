@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -20,6 +21,7 @@ dependencies {
     // Shared modules
     implementation project(':modules:common')
     implementation project(':modules:indicators')
+    implementation project(':modules:market')
 
     // Spring MVC + JPA for saving/loading trade data
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -27,6 +29,8 @@ dependencies {
 
     // Spring Batch
     implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.17.1'
 
     // TA4J core + backtester
     implementation 'org.ta4j:ta4j-core:0.18'

@@ -43,6 +43,11 @@
                     </AnchorPane>
                 </Tab>
 
+                <!-- ============ tab 3 : Back-test =================== -->
+                <Tab text="Back-test">
+                    <fx:include source="BacktestTab.fxml"/>
+                </Tab>
+
             </tabs>
         </TabPane>
     </children>

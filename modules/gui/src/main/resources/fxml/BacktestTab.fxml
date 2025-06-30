@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:controller="com.algo.trading.gui.controller.BacktestTabController"
+            xmlns:fx="http://javafx.com/fxml">
+    <SplitPane prefWidth="800.0" prefHeight="600.0">
+        <items>
+
+            <!-- Left: YAML editor -->
+            <VBox>
+                <Label text="Strategy YAML"/>
+                <TextArea fx:id="yamlArea" prefRowCount="40" prefColumnCount="40"/>
+                <HBox spacing="8">
+                    <Button text="Load…" onAction="#onLoadFile"/>
+                    <Button text="Run" onAction="#onRun"/>
+                </HBox>
+            </VBox>
+
+            <!-- Right: JSON result -->
+            <VBox>
+                <Label text="Back-test report (JSON)"/>
+                <TextArea fx:id="resultArea" editable="false"
+                          prefRowCount="40" prefColumnCount="40"/>
+            </VBox>
+
+        </items>
+    </SplitPane>
+</AnchorPane>

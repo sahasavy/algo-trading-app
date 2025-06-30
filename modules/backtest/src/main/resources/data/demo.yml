@@ -1,0 +1,18 @@
+# This data sample should be used in the GUI Panel for back testing
+
+#description: "SMA 20/50 crossover demo"
+#entry:
+#  - { indicator: "sma", length: 20, operator: "crossOver", other: "sma50" }
+#exit:
+#  - { indicator: "sma", length: 20, operator: "crossUnder", other: "sma50" }
+#mlConfirm: false
+
+symbol: RELIANCE
+quantity: 1
+
+strategy:
+  description: SMA demo
+  entry:
+    - { indicator: sma, length: 20, operator: crossOver, other: sma50 }
+  exit:
+    - { indicator: sma, length: 20, operator: crossUnder, other: sma50 }
